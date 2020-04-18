@@ -1,6 +1,9 @@
 <?php 
 
+include 'koneksi.php';
 include '../aset/header.php';
+
+$query = mysqli_query($koneksi, "SELECT * FROM kategori");
 
 ?>
 
@@ -10,37 +13,57 @@ include '../aset/header.php';
   <div class="col-md-9">
    <div class="card">
     <div class="card-header">
-    <h2>Tambah Data Anggota</h2>
+    <h2>Tambah Data Buku</h2>
     </div>
     <div class="card-body">
-         <form method="post" action="proses-tambah.php">
+         <form method="post" action="proses-tambah.php" enctype="multipart/form-data">
                 <div class="form-group">
-                 <label for="anggota">Nama Lengkap</label>
-                 <input type="text" class="form-control" name="nama" id="anggota" placeholder="Masukkan nama lengkap">
+                 <label for="buku">Judul</label>
+                 <input type="text" class="form-control" name="judul" id="judul" placeholder="Masukkan judul">
                 </div>
 
                 <div class="form-group">
-                 <label for="kelas">Kelas</label>
-                 <input type="text" class="form-control" name="kelas" id="kelas"  placeholder="Masukkan kelas">
-                 <small class="form-text text-muted">Contoh: XRPL2</small>
+                 <label for="buku">Penerbit</label>
+                 <input type="text" class="form-control" name="penerbit" id="penerbit"  placeholder="Masukkan nama penerbit">
                 </div>  
 
                 <div class="form-group">
-                 <label for="anggota">Nomor Telepon</label>
-                 <input type="text" class="form-control" name="telp" id="telp" placeholder="Masukkan nomor telepon">
-                 <small class="form-text text-muted">Contoh: 111-222-333</small>
+                 <label for="buku">Pengarang</label>
+                 <input type="text" class="form-control" name="pengarang" id="pengarang" placeholder="Masukkan nama pengarang">
                 </div>
 
                 <div class="form-group">
-                 <label for="anggota">Username</label>
-                 <input type="text" class="form-control" name="username" id="username" placeholder="Masukkan username">
+                 <label for="buku">Ringkasan</label>
+                 <textarea name="ringkasan" id="ringkasan" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                 <label for="anggota">Password</label>
-                 <input type="password" class="form-control" name="password" id="password" placeholder="Masukkan password">
+                 <label for="buku">Cover:  </label>
+                 <input type="file" name="file"> 
+                 </div>
+                
+                <div class="form-group">
+                 <label for="buku">Stok</label>
+                 <input type="number" class="form-control" name="stok" id="stok" placeholder="Masukkan jumlah stok">
                 </div>
+                
+                <div class="form-group">
+                 <label for="buku">ID Kategori</label>
+                 <select name="id_kategori" class="form-control" id="id_kategori">
+                      <option value="">-- Pilih Kategori --</option>
 
+                      <?php
+                        while($kategori = mysqli_fetch_assoc($query)):
+                      ?>
+
+                      <option value="<?php echo $kategori['id_kategori']; ?>"><?php echo $kategori["kategori"]; ?></option>
+
+                      <?php
+                       endwhile;
+                      ?>
+                 </select>
+                </div>
+                
                 <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
          </form>        
     </div>
@@ -48,6 +71,7 @@ include '../aset/header.php';
   </div>
  </div>
 </div>    
+
 
 <?php
 

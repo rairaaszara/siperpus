@@ -4,9 +4,11 @@ include 'koneksi.php';
 
 include '../aset/header.php';
 
-$id = $_GET["id_anggota"];
+$id = $_GET["id_buku"];
 
-$query = mysqli_query($koneksi, "SELECT * FROM anggota INNER JOIN level USING(id_level) WHERE anggota.id_anggota = '$id' ");
+$query1 = mysqli_query($koneksi, "SELECT * FROM buku WHERE buku.id_buku = '$id' ");
+
+$query = mysqli_query($koneksi, "SELECT * FROM buku INNER JOIN kategori USING(id_kategori) WHERE buku.id_buku = '$id' ");
 
 ?>
 
@@ -28,46 +30,53 @@ $query = mysqli_query($koneksi, "SELECT * FROM anggota INNER JOIN level USING(id
 
             <div class="card">
             <div class="card-header">
-            <h2 class="card-title">Detail Anggota</h2>                
+                <?php while($judul=mysqli_fetch_assoc($query1)): ?>
+            <h2 class="card-title"><?= $judul['judul']?></h2>
+                <?php endwhile; ?>
+                
             </div>
             <div class="card-body">
 
-                <table class="table">    
+                <table class="table">
                 <?php
                     while($buku = mysqli_fetch_assoc($query)):?>
-                    
+
                     <tr>
-                        <td width="150px">Nama</td>
-                        <td><?= $buku['nama']?></td>
+                        <td width="150px">Cover</td>
+                        <td><img src= "<?= "file/".$buku['cover']; ?>" height= '170' width='150'></td>
                     </tr>    
                     <tr>
                         <td>ID</td>
-                        <td><?= $buku['id_anggota']?></td>
+                        <td><?= $buku['id_buku']?></td>
                     </tr>
                     <tr>
-                        <td>Kelas</td>
-                        <td><?= $buku['kelas']?></td>
+                        <td>Judul</td>
+                        <td><?= $buku['judul']?></td>
                     </tr>
                     <tr>
-                        <td>telp</td>
-                        <td><?= $buku['telp']?></td>
+                        <td>Penerbit</td>
+                        <td><?= $buku['penerbit']?></td>
                     </tr>
                     <tr>
-                        <td>Username</td>
-                        <td><?= $buku['username']?></td>
+                        <td>Pengarang</td>
+                        <td><?= $buku['pengarang']?></td>
                     </tr>
                     <tr>
-                        <td>Password</td>
-                        <td><?= $buku['password']?></td>
+                        <td>Ringkasan</td>
+                        <td><?= $buku['ringkasan']?></td>
                     </tr>
                     <tr>
-                        <td>Level</td>
-                        <td><?= $buku['level']?></td>
+                        <td>Stok</td>
+                        <td><?= $buku['stok']?></td>
+                    </tr>
+                    <tr>
+                        <td>Kategori</td>
+                        <td><?= $buku['kategori']?></td>
                     </tr>
                         <td>Aksi</td>     
                         <td>
-                           <a href="edit.php?id_anggota=<?= $buku["id_anggota"];?>  " class="badge badge-warning">Edit</a>
-                           <a href="hapus.php?id_anggota=<?= $buku["id_anggota"];?> " onclick="return confirm('Yakin ingin menghapus data?')" class="badge badge-danger">Hapus</a>
+                           <a href="edit.php?id_buku=<?= $buku["id_buku"];?>  " class="badge badge-warning">Edit</a>
+                           <a href="hapus.php?id_buku=<?= $buku["id_buku"];?> " onclick="return confirm('Yakin ingin menghapus data?')" class="badge badge-danger">Hapus</a>
                         </td>
                      </tr>
                  <?php
@@ -77,9 +86,9 @@ $query = mysqli_query($koneksi, "SELECT * FROM anggota INNER JOIN level USING(id
                 </table>
                             </div>
                             </div>
-
 </body>
 </html>
+
 <?php
 
 include '../aset/footer.php';

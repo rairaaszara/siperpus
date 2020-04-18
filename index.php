@@ -7,9 +7,10 @@
 </head>
 <body>
     <?php 
-    
+
+
      include 'koneksi.php';
-     $sql = "SELECT * FROM anggota ORDER BY nama";
+     $sql = "SELECT * FROM buku INNER JOIN kategori WHERE buku.id_kategori = kategori.id_kategori ORDER BY judul";
      
      $res = mysqli_query($koneksi,$sql);
  
@@ -34,17 +35,18 @@
 
                     <div class="card">
             <div class="card-header">
-            <h2 class="card-title"><i class="fas fa-user"></i> Data Anggota</h2>
+            <h2 class="card-title"><i class="fas fa-book"></i> Data Buku</h2>
             </div>
-            <a href="tambah.php"><button type="button" class="btn btn-outline-primary" style="width:100%; height:40px">+ Tambah</button></a>
+            <a href="tambah.php"><button type="button" class="btn btn-outline-primary" style="width: 100%; height:40px">+ Tambah</button></a>
             <div class="card-body">
 
                             <table class="table">
                 <thead>
                     <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Kelas</th>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Pengarang</th>
+                    <th scope="col">Stok</th>
                     <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -55,12 +57,13 @@
 
                     <tr>
                         <th scope="row"><?=$no ?></th>
-                        <td><?= $p['nama']?></td>
-                        <td><?= $p['kelas']?></td>
+                        <td><?= $p['judul']?></td>
+                        <td><?= $p['pengarang']?></td>
+                        <td><?= $p['stok']?></td> 
                         <td>
-                        <a href="detail.php?id_anggota=<?= $p["id_anggota"];?>" class="badge badge-success">Detail</a>
-                           <a href="edit.php?id_anggota=<?= $p["id_anggota"];?>  " class="badge badge-warning">Edit</a>
-                           <a href="hapus.php?id_anggota=<?= $p["id_anggota"];?> " onclick="return confirm('Yakin ingin menghapus data?')" class="badge badge-danger">Hapus</a>
+                           <a href="detail.php?id_buku=<?= $p["id_buku"];?>" class="badge badge-success">Detail</a>
+                           <a href="edit.php?id_buku=<?= $p["id_buku"];?>  " class="badge badge-warning">Edit</a>
+                           <a href="hapus.php?id_buku=<?= $p["id_buku"];?> " onclick="return confirm('Yakin ingin menghapus data?')" class="badge badge-danger">Hapus</a>
                         </td>
                      </tr>
                  <?php

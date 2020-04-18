@@ -2,9 +2,9 @@
 
 include 'koneksi.php';
 
-$id=$_GET['id_anggota'];
+$id=$_GET['id_buku'];
 
-$query = mysqli_query($koneksi, "DELETE FROM anggota WHERE anggota.id_anggota='$id' ");
+$query = mysqli_query($koneksi, "DELETE FROM buku WHERE buku.id_buku='$id' ");
 
 if($query>0){
     echo "<script> alert('Data Berhasil Dihapus'); document.location.href='index.php';

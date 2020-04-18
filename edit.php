@@ -3,36 +3,38 @@
 include 'koneksi.php';
 include '../aset/header.php';
 
-$ID = $_GET["id_anggota"];
+$ID = $_GET["id_buku"];
 
-$query1 = mysqli_query($koneksi, "SELECT * FROM anggota WHERE anggota.id_anggota = '$ID' ");
+$query = mysqli_query($koneksi, "SELECT * FROM buku WHERE buku.id_buku = '$ID' ");
 
+$query1 = mysqli_query($koneksi, "SELECT * FROM kategori");
 
-
-
-
-include 'koneksi.php';
 
 if(isset($_POST['simpan'])){
 
-    $id = $_GET['id_anggota'];
+    $id = $_GET['id_buku'];
 
-    $nama = $_POST['nama'];
-    $kelas = $_POST['kelas'];
-    $telp = $_POST['telp'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $id_level = 3;
+    $judul = $_POST['judul'];
+    $penerbit = $_POST['penerbit'];
+    $pengarang = $_POST['pengarang'];
+    $ringkasan = $_POST['ringkasan'];
+    $stok = $_POST['stok'];
+    $id_kategori = $_POST['id_kategori'];
+    $cover = $_FILES['file']['name'];
+    $ukuran	= $_FILES['file']['size'];
+    $file_tmp = $_FILES['file']['tmp_name'];
+    move_uploaded_file($file_tmp, 'file/'.$cover);
     
 
-    $sql = "UPDATE anggota SET
-            nama = '$nama',
-            kelas  = '$kelas',
-            telp = '$telp',
-            username = '$username',
-            password = '$password',
-            id_level = '$id_level'
-            WHERE id_anggota = '$id'
+    $sql = "UPDATE buku SET
+            judul = '$judul',
+            penerbit  = '$penerbit',
+            pengarang = '$pengarang',
+            ringkasan = '$ringkasan',
+            cover = '$cover',
+            stok = '$stok',
+            id_kategori = '$id_kategori'
+            WHERE id_buku = '$id'
             ";
 
     $res = mysqli_query($koneksi, $sql);
@@ -54,7 +56,6 @@ if(isset($_POST['simpan'])){
         document.location.href='index.php';
       </script>";
     }
-
 }
 ?>
 
@@ -63,41 +64,57 @@ if(isset($_POST['simpan'])){
   <div class="col-md-9">
    <div class="card">
     <div class="card-header">
-    <h2>Edit Data Anggota</h2>
+    <h2>Edit Data Buku</h2>
     </div>
     <div class="card-body">
-         <form method="post" action="">
+         <form method="post" action="" enctype="multipart/form-data">
 
-         <?php while($edit = mysqli_fetch_assoc($query1)): ?>
+         <?php while($edit = mysqli_fetch_assoc($query)): ?>
                 <div class="form-group">
-                 <label for="buku">Nama</label>
-                 <input type="text" class="form-control" name="nama" id="nama"  value="<?= $edit['nama']?>">
+                 <label for="buku">Judul</label>
+                 <input type="text" class="form-control" name="judul" id="judul"  value="<?= $edit['judul']?>">
                 </div>
 
                 <div class="form-group">
-                 <label for="buku">Kelas</label>
-                 <input type="text" class="form-control" name="kelas" id="kelas"   value="<?= $edit['kelas']?>">
+                 <label for="buku">Penerbit</label>
+                 <input type="text" class="form-control" name="penerbit" id="penerbit"   value="<?= $edit['penerbit']?>">
                 </div>  
 
                 <div class="form-group">
-                 <label for="buku">Telfon</label>
-                 <input type="text" class="form-control" name="telp" id="telp"  value="<?= $edit['telp']?>">
+                 <label for="buku">Pengarang</label>
+                 <input type="text" class="form-control" name="pengarang" id="pengarang"  value="<?= $edit['pengarang']?>">
                 </div>
 
                 <div class="form-group">
-                 <label for="buku">Username</label>
-                 <input type="text" name="username" id="username" class="form-control" value="<?= $edit['username']?>"></textarea>
+                 <label for="buku">Ringkasan</label>
+                 <textarea name="ringkasan" id="ringkasan" class="form-control" placeholder="<?= $edit['ringkasan']?>"></textarea>
                 </div>
 
                 <div class="form-group">
-                 <label for="buku">Password</label>
-                 <input type="password" class="form-control" name="password" id="password"  value="<?= $edit['password']?>"> 
+                 <label for="buku">Cover:  </label>
+                 <input type="file" name="file"> 
                  </div>
                 
+                <div class="form-group">
+                 <label for="buku">Stok</label>
+                 <input type="text" class="form-control" name="stok" id="stok" value="<?= $edit['stok']?>">
+                </div>
+
                 <?php
                      endwhile;
                 ?>
-                               
+                
+                <div class="form-group">
+                 <label for="buku">Kategori</label>
+                 <select name="id_kategori" class="form-control" id="id_kategori">
+                     <option value="">-- Pilih Kategori --</option>
+
+                        <?php while($kategori = mysqli_fetch_assoc($query1)):?>
+                      <option value="<?php echo $kategori['id_kategori']; ?>"><?php echo $kategori["kategori"]; ?></option>
+                        <?php endwhile; ?>
+                 </select>
+                </div>
+                
                 <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
          </form>        
     </div>
@@ -105,6 +122,12 @@ if(isset($_POST['simpan'])){
   </div>
  </div>
 </div>    
+
+
+
+
+
+
 <?php
 
 include '../aset/footer.php';
